@@ -42,7 +42,7 @@ authors = []
 
 number_of_posts = 0
 
-for submission in reddit.subreddit('mbti').all(limit=1000):
+for submission in reddit.subreddit('mbti').hot(limit=1000):
     number_of_posts += 1
     submission = reddit.submission(id=submission.id)
     df = pd.DataFrame()
