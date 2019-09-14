@@ -51,8 +51,10 @@ for submission in reddit.subreddit('mbti').hot(limit=100):
         numComments = 0
         if str(comment.author) in authors:
             break
+        if comment.author is None:
+            break
         for subcomment in comment.author.comments.top('all'):
-            # Line 56 checks if the author flair is one of the 16 types.
+            # Line checks if the author flair is one of the 16 types.
             # If it is not then that author gets thrown out
             if comment.author_flair_text not in typeCountUpper:
                 break
