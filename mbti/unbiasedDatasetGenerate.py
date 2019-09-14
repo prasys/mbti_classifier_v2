@@ -2,6 +2,7 @@
 import praw
 from praw.models import MoreComments
 import pandas as pd
+import pprint
 pd.set_option('display.max_rows', None)
 pd.set_option('display.max_columns', None)
 pd.set_option('display.width', None)
@@ -42,11 +43,31 @@ authors = []
 
 number_of_posts = 0
 
+typeCount = {
+    'ENTJ' : 0,
+    'ENTP' : 0,
+    'ENFJ' : 0,
+    'ENFP' : 0,
+    'ESTJ' : 0,
+    'ESTP' : 0,
+    'ESFJ' : 0,
+    'ESFP' : 0,
+    'INTJ' : 0,
+    'INTP' : 0,
+    'INFJ' : 0,
+    'INFP' : 0,
+    'ISTJ' : 0,
+    'ISTP' : 0,
+    'ISFJ' : 0,
+    'ISFP' : 0,
+}
+
 for submission in reddit.subreddit('mbti').hot(limit=1000):
     number_of_posts += 1
     submission = reddit.submission(id=submission.id)
     df = pd.DataFrame()
     submission.comments.replace_more(limit=None)
+    pprint.pprint(typeCount)
     for comment in submission.comments:
         numComments = 0
         if str(comment.author) in authors:
@@ -69,8 +90,9 @@ for submission in reddit.subreddit('mbti').hot(limit=1000):
             dataset.loc[count,'type'] = str(comment.author_flair_text)
             dataset.loc[count,'comment'] = str(subcomment.body)
             authors.append(str(comment.author))
+            typeCount[dataset.loc[count,'type']] = typeCount.get(dataset.loc[count,'type'], 0) + 1
+            print("Posts: " + str(number_of_posts) + " Current Author: " + str(comment.author) + " Total comments: " + str(count))
             numComments += 1
             count += 1
-            print("Posts: " + str(number_of_posts) + " Current Author: " + str(comment.author) + " Total comments: " + str(count))
 
 dataset.to_csv('dataset.csv')
