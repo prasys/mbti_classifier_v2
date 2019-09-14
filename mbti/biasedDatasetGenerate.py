@@ -1,3 +1,5 @@
+# gets comments and types from a myers briggs subreddit r/mbti
+# data is biased due to the subreddit being related to the study
 import praw
 from praw.models import MoreComments
 import pandas as pd
@@ -34,6 +36,12 @@ dataset['num'] = range(len(dataset))
 dataset.reset_index(level=0, inplace=True)
 dataset.set_index('num')
 dataset = dataset[['type','comment']]
+
+for i in range(len(dataset)):
+    if len(dataset.loc[i,'comment']) < 30:
+        dataset = dataset.drop(i)
+dataset = dataset.sample(frac=1).reset_index(drop=True)
+
 dataset.to_csv('dataset.csv')
 
 # all mbti types
