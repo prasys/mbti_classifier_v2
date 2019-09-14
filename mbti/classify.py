@@ -1,6 +1,5 @@
 import pandas as pd
 from io import StringIO
-import matplotlib.pyplot as plt
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.feature_selection import chi2
 from numpy import *
@@ -10,8 +9,10 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.naive_bayes import MultinomialNB
 from nltk import tokenize
+import pprint
+import matplotlib.pyplot as plt
 
-df = pd.read_csv('dataset.csv')
+df = pd.read_csv('test.csv')
 
 df = df[pd.notnull(df['comment'])]
 
@@ -41,9 +42,9 @@ X_train_tfidf = tfidf_transformer.fit_transform(X_train_counts)
 clf = MultinomialNB().fit(X_train_tfidf, y_train)
 
 # use this to predict text:
-my_input = "I started drinking a bottle of wine close to bedtime. I just wasnt feeling anything though, so I chugged the rest. I went to sleep feeling not too messed up. Some time during the night I woke up have to pee. Instead of stumbling to the toilet, I went to the laundry room and peed in the washing machine. It must have been hard since it's a top-loader. The next day I went to do laundry and the smell was sooo bad! It took me a minute to realize I peed in the washer. I thought that was a dream! Nope. It was real. I did a wash cycle with no clothes in there but a lot of bleach. It smelled fine after that. I'm not really sure why I peed in there. Did I think it would be funny? Did I confuse a white washing machine with a white toilet?? Who knows."
+my_input = "i just finished my willows work shift and got back to san francisco.  tomorrow i'm coming to michigan for the weekend.  looks like the house sale is going through so i'm going to be super busy clearing out the bottom floor and basement.  but of course i will have time to hang with you as well ! let me know your schedule"
 
-# lines 50-59 seperates my_input into a list of sentances and types each one with the model.
+# Seperates my_input into a list of sentances and types each one with the model.
 # Then we list out the models predictions for each sentence.
 paragraph = tokenize.sent_tokenize(my_input)
 types = []
@@ -55,10 +56,33 @@ for sentance in paragraph:
     type = type.replace("'","")
     types.append(type)
 
-print(types)
+def softmax(list):
+    typeCount = {
+        'ENTJ' : 0,
+        'ENTP' : 0,
+        'ENFJ' : 0,
+        'ENFP' : 0,
+        'ESTJ' : 0,
+        'ESTP' : 0,
+        'ESFJ' : 0,
+        'ESFP' : 0,
+        'INTJ' : 0,
+        'INTP' : 0,
+        'INFJ' : 0,
+        'INFP' : 0,
+        'ISTJ' : 0,
+        'ISTP' : 0,
+        'ISFJ' : 0,
+        'ISFP' : 0,
+    }
+    for item in list:
+        typeCount[item] += 1
+    sum = 0
+    for i in typeCount:
+        sum += typeCount[i]
+    for i in typeCount:
+        typeCount[i] = str(round(typeCount[i]/sum,2)*100) + "%"
 
-### optional graph of the datasett
-# imbalanced dataset
-# fig = plt.figure(figsize=(8,6))
-# df.groupby('type')['comment'].count().plot.bar(ylim=0)
-# plt.show()
+    plt.bar(*zip(*typeCount.items()))
+    plt.show()
+softmax(types)
