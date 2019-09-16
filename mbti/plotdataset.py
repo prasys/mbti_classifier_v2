@@ -1,7 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-dataset = pd.read_csv('unbiasedData.csv')
+dataset = pd.read_csv('dataset.csv')
 
 typeCount = {
     'ENTJ' : 0,
@@ -28,6 +28,6 @@ for i in range(len(dataset)):
 
 print(typeCount)
 # graphs the number of comments by each type
-# plt.bar(range(len(typeCount)), list(typeCount.values()), align='center')
-# plt.xticks(range(len(typeCount)), list(typeCount.keys()))
-# plt.show()
+plt.bar(range(len(typeCount)), list(typeCount.values()), align='center')
+plt.xticks(range(len(typeCount)), list(typeCount.keys()))
+plt.show()

@@ -46,4 +46,4 @@ plt.show()
 
 df = df.reset_index(drop=True)
 
-df.to_csv('test.csv')
+df.to_csv('balancedDataset.csv')
