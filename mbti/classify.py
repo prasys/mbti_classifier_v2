@@ -12,7 +12,7 @@ from nltk import tokenize
 import pprint
 import matplotlib.pyplot as plt
 
-df = pd.read_csv('test.csv')
+df = pd.read_csv('balancedDataset.csv')
 
 df = df[pd.notnull(df['comment'])]
 
@@ -42,7 +42,7 @@ X_train_tfidf = tfidf_transformer.fit_transform(X_train_counts)
 clf = MultinomialNB().fit(X_train_tfidf, y_train)
 
 # use this to predict text:
-my_input = "i just finished my willows work shift and got back to san francisco.  tomorrow i'm coming to michigan for the weekend.  looks like the house sale is going through so i'm going to be super busy clearing out the bottom floor and basement.  but of course i will have time to hang with you as well ! let me know your schedule"
+my_input = "I def recommend flying, tickets are cheap on spirit, even round trip. I can help pay too. Weed isn’t legal in NY i don’t think, but I still have a good amount of edibles left"
 # Seperates my_input into a list of sentances and types each one with the model.
 # Then we list out the models predictions for each sentence.
 paragraph = tokenize.sent_tokenize(my_input)
