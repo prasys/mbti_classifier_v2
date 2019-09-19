@@ -42,7 +42,7 @@ X_train_tfidf = tfidf_transformer.fit_transform(X_train_counts)
 clf = MultinomialNB().fit(X_train_tfidf, y_train)
 
 # use this to predict text:
-my_input = "I def recommend flying, tickets are cheap on spirit, even round trip. I can help pay too. Weed isn’t legal in NY i don’t think, but I still have a good amount of edibles left"
+my_input = "I def recommend flying, tickets are cheap on spirit, even round trip. I can help pay too."
 # Seperates my_input into a list of sentances and types each one with the model.
 # Then we list out the models predictions for each sentence.
 paragraph = tokenize.sent_tokenize(my_input)
