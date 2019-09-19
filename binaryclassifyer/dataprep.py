@@ -27,7 +27,7 @@ deciderCount = 0
 for i in range(len(data)):
     type = data.loc[i,'type']
     if (type[0] == 'E' and type[3] == 'J') or (type[0] == 'I' and type[3] == 'P'):
-        data.loc[i,'classification'] = 'decider'
+        data.loc[i,'classification'] = 0
         if observerCount <= 2099:
             train_df.loc[train_index,'type'] = data.loc[i,'type']
             train_df.loc[train_index,'classification'] = data.loc[i,'classification']
@@ -40,7 +40,7 @@ for i in range(len(data)):
             test_index += 1
         observerCount += 1
     else:
-        data.loc[i,'classification'] = 'observer'
+        data.loc[i,'classification'] = 1
         if deciderCount <= 2099:
             train_df.loc[train_index,'type'] = data.loc[i,'type']
             train_df.loc[train_index,'classification'] = data.loc[i,'classification']
@@ -56,21 +56,5 @@ for i in range(len(data)):
 train_df.to_csv('train_df.csv')
 test_df.to_csv('test_df.csv')
 
-o = 0
-d = 0
-for i in range(len(train_df)):
-    if str(train_df.loc[i,'classification']) == 'observer':
-        o += 1
-    elif str(train_df.loc[i,'classification']) == 'decider':
-        d += 1
-
-o2 = 0
-d2 = 0
-for i in range(len(test_df)):
-    if str(test_df.loc[i,'classification']) == 'observer':
-        o2 += 1
-    elif str(test_df.loc[i,'classification']) == 'decider':
-        d2 += 1
-
-print("Training data || observers: " + str(o) + " deciders: " + str(d))
-print("Testing data || observers: " + str(o2) + " deciders: " + str(d2))
+print("Training data || observers: " + str(train_df['classification'].sum()) + " deciders: " + str(len(train_df)-train_df['classification'].sum()))
+print("Testing data || observers: " + str(test_df['classification'].sum()) + " deciders: " + str(len(test_df)-test_df['classification'].sum()))
